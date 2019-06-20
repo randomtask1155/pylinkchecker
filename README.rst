@@ -92,7 +92,9 @@ usage examples.
 
     Crawler Options:
       These options modify the way the crawler traverses the site.
-
+      -A USER_AGENT, --user-agent=USER_AGENT
+                        Specify the user agent header when crawling sites.
+                        Default is "Python-urllib/X.X"
       -O, --test-outside  fetch resources from other domains without crawling
                           them
       -H ACCEPTED_HOSTS, --accepted-hosts=ACCEPTED_HOSTS
