@@ -2,3 +2,4 @@
 pylinkchecker.egg-info
 dist
 .idea/
+build/
