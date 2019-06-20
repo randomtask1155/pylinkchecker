@@ -268,7 +268,7 @@ class PageCrawler(object):
         try:
             response = open_url(self.urlopen, self.request_class,
                     url_split_to_crawl.geturl(), self.worker_config.timeout,
-                    self.timeout_exception, self.auth_header)
+                    self.timeout_exception, self.worker_config.user_agent, self.auth_header)
 
             if response.exception:
                 if response.status:
@@ -497,7 +497,7 @@ def crawl_page(worker_init):
     page_crawler.crawl_page_forever()
 
 
-def open_url(open_func, request_class, url, timeout, timeout_exception,
+def open_url(open_func, request_class, url, timeout, timeout_exception, user_agent,
         auth_header=None):
     """Opens a URL and returns a Response object.
 
@@ -514,7 +514,11 @@ def open_url(open_func, request_class, url, timeout, timeout_exception,
     :rtype: A Response object
     """
     try:
-        request = request_class(url)
+	request = None
+	if user_agent:
+            request = request_class(url,headers={'User-Agent': user_agent})
+	else:
+            request = request_class(url)
         if auth_header:
             request.add_header(auth_header[0], auth_header[1])
         output_value = open_func(request, timeout=timeout)

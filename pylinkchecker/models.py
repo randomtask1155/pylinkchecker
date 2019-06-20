@@ -83,7 +83,7 @@ WorkerInit = namedtuple("WorkerInit", ["worker_config", "input_queue",
 
 
 WorkerConfig = namedtuple("WorkerConfig", ["username", "password", "types",
-        "timeout", "parser", "strict_mode"])
+        "timeout", "parser", "strict_mode", "user_agent"])
 
 
 WorkerInput = namedtuple("WorkerInput", ["url_split", "should_crawl"])
@@ -213,7 +213,7 @@ class Config(UTF8Class):
                         .format(element_type))
 
         return WorkerConfig(options.username, options.password, types,
-                options.timeout, options.parser, options.strict_mode)
+                options.timeout, options.parser, options.strict_mode, options.user_agent)
 
     def _build_accepted_hosts(self, options, start_urls):
         hosts = set()
@@ -243,6 +243,9 @@ class Config(UTF8Class):
 
         crawler_group = OptionGroup(parser, "Crawler Options",
                 "These options modify the way the crawler traverses the site.")
+        crawler_group.add_option("-A", "--user-agent", dest="user_agent", 
+                action="store", default=None,
+                help="Specify the user agent header when crawling sites. Default is \"Python-urllib/X.X\"")
         crawler_group.add_option("-O", "--test-outside", dest="test_outside",
                 action="store_true", default=False,
                 help="fetch resources from other domains without crawling them")
